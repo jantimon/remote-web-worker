@@ -1,6 +1,6 @@
 # Remote Worker
 
-Leightweight Worker patch to allow loading scripts from remote URLs
+[Leightweight (~300b)][1] Worker patch to allow loading scripts from remote URLs
 
 
 ## Installation
@@ -20,7 +20,10 @@ import 'remote-web-worker';
 Initialize a Worker just like you would normally do:
 
 ```js
-const worker = new Worker('https://cdn.jsdelivr.net/npm/console-log-hello-world@1.0.3/hello-world.min.js');
+const worker = new Worker(
+  'https://cdn.jsdelivr.net/npm/console-log-hello-world',
+  { type: 'classic' }
+);
 ```
 
 ## How it works
@@ -35,7 +38,7 @@ https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope/importScripts
 
  - Chrome 4+
  - Firefox 4+
- -  Safari 4+
+ - Safari 4+
 
 ## Limitations
 
@@ -44,3 +47,5 @@ https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope/importScripts
 ## License
 
 MIT
+
+[1]: https://bundlephobia.com/package/remote-web-worker
