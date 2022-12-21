@@ -1,6 +1,6 @@
 {
   "name": "remote-web-worker",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Cross origin web worker",
   "author": "Jan Nicklas",
   "license": "MIT",
