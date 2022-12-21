@@ -15,29 +15,30 @@
 // import "remote-web-worker";
 // ```
 typeof window !== "undefined" &&
-  (window.Worker = ((BaseWorker: typeof window.Worker) =>
+  (Worker = ((BaseWorker: typeof Worker) =>
     class Worker extends BaseWorker {
       constructor(scriptURL: string | URL, options?: WorkerOptions) {
-        if (/^(http|\/\/)/.test(String(scriptURL))) {
-          super(
-            URL.createObjectURL(
-              new Blob(
-                [
-                  // Load the remote script using `importScripts`
-                  // and replace the `importScripts` function with
-                  // a patched version that will resolve relative URLs
-                  // to the remote script URL.
-                  `importScripts=((baseImportScripts)=>(...args)=>baseImportScripts(...args.map((url)=>''+new URL(url,"${scriptURL}"))))(importScripts);importScripts("${scriptURL}")`,
-                ],
-                { type: "text/javascript" }
+        const url = String(scriptURL);
+        super(
+          // Check if the URL is remote
+          /^(http|\/\/)/.test(url) && !url.startsWith(location.origin)
+            ? // Launch the worker with an inline script that will use `importScripts`
+              // to bootstrap the actual script to work around the same origin policy.
+              URL.createObjectURL(
+                new Blob(
+                  [
+                    // Replace the `importScripts` function with
+                    // a patched version that will resolve relative URLs
+                    // to the remote script URL.
+                    `importScripts=((baseImportScripts)=>(...args)=>baseImportScripts(...args.map((url)=>''+new URL(url,"${url}"))))(importScripts);importScripts("${url}")`,
+                  ],
+                  { type: "text/javascript" }
+                )
               )
-            ),
-            options
-          );
-        } else {
-          super(scriptURL, options);
-        }
+            : scriptURL,
+          options
+        );
       }
-    })(window.Worker));
+    })(Worker));
 
 export type WorkerConstructor = typeof window.Worker;

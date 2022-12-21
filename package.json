@@ -1,6 +1,6 @@
 {
   "name": "remote-web-worker",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Cross origin web worker",
   "author": "Jan Nicklas",
   "license": "MIT",
@@ -15,8 +15,9 @@
   "homepage": "https://github.com/jantimon/remote-web-worker",
   "repository": "https://github.com/jantimon/remote-web-worker.git",
   "scripts": {
-    "prepublishOnly": "npm run build",
+    "prepublishOnly": "npm run prettier && npm run build",
     "build": "parcel build",
+    "prettier": "npx prettier --write \"src/**/*.ts\"",
     "dev": "parcel serve --dist-dir demo/dist demo/index.html"
   },
   "devDependencies": {
