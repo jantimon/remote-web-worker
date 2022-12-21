@@ -49,4 +49,4 @@ typeof window !== "undefined" &&
       }
     })(Worker));
 
-export type WorkerConstructor = typeof window.Worker;
+export {};

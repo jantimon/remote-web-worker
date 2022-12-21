@@ -1,7 +1,13 @@
 # Remote Worker
 
-[Leightweight (~300b)][1] Worker patch to allow loading scripts from remote URLs
+[Leightweight (~0.3kb)][1] Worker patch to allow loading scripts from remote URLs (cross-origin).
 
+## Motivation
+
+This patch allows to host Web Worker scripts on CDN servers without the following exceptions:
+
+- `"Uncaught DOMException: Failed to construct 'Worker': Script at 'https://cdn.jsdelivr.net/npm/console-log-hello-world' cannot be accessed from origin 'http://localhost:8080'."`
+- `"Uncaught (in promise) DOMException: Failed to execute 'importScripts' on 'WorkerGlobalScope': The script at 'https://cdn.jsdelivr.net/npm/console-log-hello-world' failed to load.`
 
 ## Installation
 
