@@ -14,16 +14,16 @@
 // ```ts
 // import "remote-web-worker";
 // ```
-window.Worker = ((BaseWorker: typeof window.Worker) => 
-    class Worker extends BaseWorker {
-        constructor(scriptURL: string | URL, options?: WorkerOptions) {
-            if (String(scriptURL).startsWith("http")) {
-                super(URL.createObjectURL( new Blob( [ `importScripts( "${ scriptURL }" );` ], { type: "text/javascript" } ) ));
-            } else {
-                super(scriptURL, options);
+export default typeof window !== "undefined" && (
+    window.Worker = ((BaseWorker: typeof window.Worker) =>
+        class Worker extends BaseWorker {
+            constructor(scriptURL: string | URL, options?: WorkerOptions) {
+                if (/^(http|\/\/)/.test(String(scriptURL))) {
+                    super(URL.createObjectURL(new Blob([`importScripts( "${scriptURL}" );`], { type: "text/javascript" })));
+                } else {
+                    super(scriptURL, options);
+                }
             }
         }
-    }
-)(window.Worker);
-
-export default window.Worker;
+    )(window.Worker)
+);
