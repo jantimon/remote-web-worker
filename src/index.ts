@@ -14,7 +14,7 @@
 // ```ts
 // import "remote-web-worker";
 // ```
-export default typeof window !== "undefined" && (
+typeof window !== "undefined" && (
     window.Worker = ((BaseWorker: typeof window.Worker) =>
         class Worker extends BaseWorker {
             constructor(scriptURL: string | URL, options?: WorkerOptions) {
@@ -27,3 +27,5 @@ export default typeof window !== "undefined" && (
         }
     )(window.Worker)
 );
+
+export type WorkerConstructor = typeof window.Worker;
