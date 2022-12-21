@@ -4,10 +4,10 @@
 
 ## Motivation
 
-This patch allows to host Web Worker scripts on CDN servers without the following exceptions:
+Allows to host Web Worker scripts on CDN servers without the following cors exceptions:
 
-- `"Uncaught DOMException: Failed to construct 'Worker': Script at 'https://cdn.jsdelivr.net/npm/console-log-hello-world' cannot be accessed from origin 'http://localhost:8080'."`
-- `"Uncaught (in promise) DOMException: Failed to execute 'importScripts' on 'WorkerGlobalScope': The script at 'https://cdn.jsdelivr.net/npm/console-log-hello-world' failed to load.`
+- `Uncaught DOMException: Failed to construct 'Worker': Script at 'https://cdn.jsdelivr.net/npm/console-log-hello-world' cannot be accessed from origin 'http://localhost:8080'.`
+- `Uncaught (in promise) DOMException: Failed to execute 'importScripts' on 'WorkerGlobalScope': The script at 'https://cdn.jsdelivr.net/npm/console-log-hello-world' failed to load.`
 
 ## Installation
 
@@ -49,6 +49,14 @@ https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope/importScripts
 ## Limitations
 
  - Only supports `type="classic"` workers (no `import` or `export`)
+
+## Security
+
+The remote script is loaded via `importScripts` which is not subject to CORS.  
+However, the script is loaded in a separate context and cannot access the main thread
+or the DOM.
+The remote script runs in the current sites origin and therefore will not be able to access
+Cookies or Local Storage of the remote server.
 
 ## License
 

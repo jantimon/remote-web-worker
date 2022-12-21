@@ -21,7 +21,7 @@ typeof window !== "undefined" &&
         const url = String(scriptURL);
         super(
           // Check if the URL is remote
-          /^(http|\/\/)/.test(url) && !url.startsWith(location.origin)
+          url.includes("://") && !url.startsWith(location.origin)
             ? // Launch the worker with an inline script that will use `importScripts`
               // to bootstrap the actual script to work around the same origin policy.
               URL.createObjectURL(
@@ -32,7 +32,9 @@ typeof window !== "undefined" &&
                     // to the remote script URL.
                     //
                     // Without a patched `importScripts` Webpack 5 generated worker chunks will fail with the following error:
-                    // "Uncaught (in promise) DOMException: Failed to execute 'importScripts' on 'WorkerGlobalScope': The script at 'http://some.domain/worker.1e0e1e0e.js' failed to load."
+                    //
+                    // Uncaught (in promise) DOMException: Failed to execute 'importScripts' on 'WorkerGlobalScope':
+                    // The script at 'http://some.domain/worker.1e0e1e0e.js' failed to load.
                     //
                     // For minification, the inlined variable names are single letters:
                     // i = original importScripts
